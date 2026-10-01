@@ -9,4 +9,5 @@
     paddlepaddle==3.3.1 \
     paddleocr==3.7.0 \
     paddlex==3.7.2
+
 复制代码，把best.pt放入文件中，运行代码
