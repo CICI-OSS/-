@@ -10,18 +10,21 @@ import math
 # 1. 初始化模型
 # ---------------------------------------------------------
 print("正在加载 YOLOv8 模型...")
-# 请修改为你的模型路径
-model_path = '/content/drive/MyDrive/Colab_Notebooks/v8best.pt'
+model_path = '/content/best.pt'
 try:
     yolo_model = YOLO(model_path)
 except:
     print(f"找不到 {model_path}，加载官方 yolov8n.pt 测试...")
     yolo_model = YOLO('yolov8n.pt')
-
+    
 print("正在加载 PaddleOCR 模型...")
 # drop_score=0.5: 丢弃置信度低的文本
 # use_angle_cls=True: 开启方向分类（关键，用于矫正颠倒/旋转的文字）
-ocr = PaddleOCR(use_angle_cls=True, lang="ch", show_log=False, drop_score=0.5)
+ocr = PaddleOCR(
+    lang="ch",
+    text_rec_score_thresh=0.5,
+    use_textline_orientation=True
+)
 
 # ---------------------------------------------------------
 # 2. 图像预处理函数 (核心改进)
@@ -192,7 +195,7 @@ def process_images(image_files):
 # ---------------------------------------------------------
 with gr.Blocks(title="YOLOv8 + PaddleOCR") as demo:
     gr.Markdown("## YOLOv8 + PaddleOCR 电动车牌识别")
-    gr.Markdown("包含：外扩裁剪、超分辨率放大、CLAHE对比度增强、自动纠偏")
+    gr.Markdown("包含:外扩裁剪、超分辨率放大、CLAHE对比度增强、自动纠偏")
 
     with gr.Row():
         with gr.Column():
@@ -211,6 +214,7 @@ with gr.Blocks(title="YOLOv8 + PaddleOCR") as demo:
                 columns=2,
                 height="auto"
             )
+    
 
     process_btn.click(
         fn=process_images,
@@ -220,3 +224,4 @@ with gr.Blocks(title="YOLOv8 + PaddleOCR") as demo:
 
 if __name__ == "__main__":
     demo.launch()
+
