@@ -5,6 +5,7 @@
 先配置环境：
 
 !pip install ultralytics
+
 !pip install -q --no-cache-dir \
     paddlepaddle==3.3.1 \
     paddleocr==3.7.0 \
